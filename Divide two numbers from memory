@@ -1,0 +1,18 @@
+.model small
+.stack
+.data
+	num1 dw 0005h
+	num2 dw 0008h
+       	result dw 0000h
+.code
+start:
+	mov ax,@data
+	mov ds,ax
+	mov ax,num1
+	mov bx,num2
+      	add ax,bx
+     	mov result,ax
+	mov ah,4ch
+	int 21h
+	end start
+end
