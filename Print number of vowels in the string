@@ -1,0 +1,65 @@
+; Program to print number of vowels in the string
+.model small
+disp macro msg
+	mov dx,offset msg
+	mov ah,09h
+	int 21h
+endm
+.stack
+.data
+	msg1 db "Enter the string$ "
+	msg2 db 10,13,"No. of Vowels= $"
+	string db 50 dup(0)
+.code
+
+start:
+	mov ax,@data
+	mov ds,ax
+	disp msg1
+	lea si,string
+	mov cl,0h
+	mov bl,0h
+	
+accept:
+	mov ah,01h 
+	int 21h
+	mov [si],al
+	inc si
+	inc cl
+	cmp al,0dh
+	jnz accept
+
+	lea si,string
+check:
+	mov al,[si]
+	cmp al,'a'
+	je count
+	cmp al,'e'
+	je count
+	cmp al,'i'
+	je count
+	cmp al,'o'
+	je count
+	cmp al,'u'
+	je count
+	inc si
+	dec cl
+	jz check
+	jmp last 
+
+count:
+	inc bl
+	inc si
+	jmp check 
+
+last:
+	disp msg2
+	mov dl,bl
+	add dl,30h
+	mov ah,02h
+	int 21h
+	mov ah,4ch
+	int 21h
+	end start
+
+end	
