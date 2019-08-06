@@ -1,0 +1,70 @@
+;Program to accept and check for Palindrome
+
+.model small
+disp macro msg
+        mov dx,offset msg
+        mov ah,09h
+        int 21h
+endm
+.stack
+.data
+        msg1 db "Enter the string $"
+	msg2 db 10,13,"The string is Palindrome$"
+	msg3 db 10,13,"The string is not Palindrome$"
+        string db 40 dup(0)
+	str2   db 40 dup(0)
+
+.code
+start:
+        mov ax,@data
+        mov ds,ax
+        disp msg1
+        lea si,string
+	mov cl,0h
+
+accept:
+              
+       mov ah,01h
+       int 21h
+       mov [si],al
+       inc si
+       inc cl	
+       cmp al,0dh
+       jnz accept 
+    
+copy:
+	mov ch,cl
+	lea di,str2
+	mov dl,[si]
+	mov [di],dl
+	dec si
+	inc di
+	dec cl
+	jnz copy
+
+
+
+ 	lea di,str2
+	lea si,string
+continue:
+
+	mov al,[di]
+	mov ah,[si]
+	cmp ah,al
+	jnz notpal	
+	inc di
+	inc si
+	dec ch
+	cmp ch,00h
+	jnz notpal
+	disp msg2
+	jmp last
+	
+
+notpal: disp msg3 
+
+last:
+        mov ah,4ch
+        int 21h
+        end start
+end
