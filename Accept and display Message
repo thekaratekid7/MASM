@@ -1,0 +1,27 @@
+;Program to accept and display message
+.model small
+display macro msg
+        mov dx,offset msg
+        mov ah,09h
+        int 21h
+endm
+.stack
+.data
+        msg1 db "Enter the character$"
+        msg2 db 10,13,"The entered character is$"
+.code
+start:
+        mov ax,@data
+        mov ds,ax
+        display msg1
+        mov ah,01h   ;accept character
+        int 21h
+        mov bl,al    ;al < bl
+        display msg2
+        mov dl,bl     ;dl < bl
+        mov ah,02h    ;print character
+        int 21h
+        mov ah,4ch
+        int 21h
+        end start
+end
