@@ -1,0 +1,50 @@
+;Program to print a list of numbers
+
+.model small
+disp macro msg
+        mov dx,offset msg
+        mov ah,09h
+        int 21h
+endm
+.stack
+.data
+        msg1 db "Enter the count of numbers $"
+        msg2 db 10,13,"Enter the number $"
+        msg3 db 10,13,"The list of numbers are $"
+        table db 20 dup(0)
+.code
+start:
+        mov ax,@data
+        mov ds,ax
+        disp msg1
+        mov ah,01h
+        int 21h
+        mov cl,al        
+        sub cl,30h
+        mov bl,cl
+        lea si,table
+
+accept:
+       disp msg2
+       mov ah,01h
+       int 21h
+       mov [si],al
+       inc si
+       dec cl
+       jnz accept
+     
+
+       lea si,table
+print:
+        disp msg3
+        mov dl,[si]
+        mov ah,02h
+        int 21h
+        inc si
+        dec bl
+        jnz print
+
+        mov ah,4ch
+        int 21h
+        end start
+end
